@@ -1,26 +1,22 @@
-# Security Policy
+# Internal Security Guidelines
 
-At LinkCXO, we take the security, integrity, and confidentiality of our executive platform, member data, and developer infrastructure with the highest priority.
+This document outlines security best practices for all LinkCXO engineering team members.
 
-## Reporting a Vulnerability
+## 🔐 Credentials & Secrets
 
-If you discover a potential security vulnerability within any LinkCXO repository, platform, or service, please report it privately and responsibly. **Do not create public GitHub issues for security vulnerabilities.**
+1. **Zero Hardcoded Secrets**: Never commit `.env` files, API tokens, database connection strings, JWT secrets, or private keys to any repository.
+2. **Environment Variables**: Use Doppler / AWS Secrets Manager / GitHub Organization Secrets for injecting runtime credentials into CI/CD pipelines.
+3. **Pre-commit Checks**: Run local linters or tools like `git-secrets` / `trufflehog` to catch accidental secret commits before pushing.
+4. **Credential Rotation**: If a key or token is accidentally pushed to Git, report it immediately to the DevOps lead and rotate the compromised credential across all environments.
 
-### How to Report
+## 🛡️ Repository & Access Standards
 
-Please report security issues via email to:
-📧 **security@linkcxo.com**
+- **Branch Protection**: Direct pushes to `main` and `production` branches are strictly disabled. All changes must go through a pull request with at least one approved code review.
+- **Access Control**: Repository access is strictly managed via GitHub Teams and principle of least privilege.
+- **Dependency Auditing**: Regularly run dependency scans (`npm audit`, `pip-audit`, etc.) to remediate vulnerable third-party packages.
 
-Please include the following information in your advisory:
-- Detailed description of the vulnerability and its potential impact.
-- Step-by-step instructions or proof-of-concept (PoC) demonstrating how to reproduce the issue.
-- Relevant URLs, API endpoints, logs, or system details.
-- Any proposed remediations or patches (if available).
+## 🚨 Incident & Vulnerability Reporting
 
-### Our Commitment
-
-- We will acknowledge receipt of your vulnerability report within 48 business hours.
-- We will work diligently to validate, patch, and release fixes in a timely manner.
-- We will maintain confidentiality and coordinate responsible disclosure with you.
-
-Thank you for helping keep LinkCXO and our executive community safe.
+If you identify a security issue, exposed credential, or critical system vulnerability:
+- **Do not** discuss it in public channels.
+- Notify the Tech Lead and DevOps team immediately via the `#security-alerts` internal channel.
